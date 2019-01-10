@@ -30,7 +30,7 @@ public class JavaAPIOpenAnyTrade implements IGenericMessageListener, IStatusMess
         japl.loadConfig();
         japl.login();
         System.in.read();
-        japl.logout(); // to make the example simple this may throw a "socket closed" error on disconnect
+        japl.logout();
     }
 
     public JavaAPIOpenAnyTrade() {
@@ -38,7 +38,7 @@ public class JavaAPIOpenAnyTrade implements IGenericMessageListener, IStatusMess
     }
 
     public boolean loadConfig() {
-        return loadConfig("D291043975", "6411", "Demo", "http://www.fxcorporate.com/Hosts.jsp"); // please populate with username and password
+        return loadConfig("D291043975", "6411", "Demo", "http://www.fxcorporate.com/Hosts.jsp");
     }
 
     public boolean loadConfig(String username, String password, String station, String server) {
@@ -59,13 +59,13 @@ public class JavaAPIOpenAnyTrade implements IGenericMessageListener, IStatusMess
         this.gateway.registerGenericMessageListener(this);
         this.gateway.registerStatusMessageListener(this);
         this.gateway.login(this.loginProperties);
-        this.gateway.requestTradingSessionStatus(); // account remembers subscription status between logins and will start stremaing automatically after requesting trading session status
+        this.gateway.requestTradingSessionStatus();
         return this.gateway.isConnected();
     }
 
     public void subscribe() {
         MarketDataRequest mdr = new MarketDataRequest();
-        mdr.addRelatedSymbol(this.tradingSessionStatus.getSecurity("EUR/USD")); // as trading session status is required to properly build a subscription request, call it only after it is received
+        mdr.addRelatedSymbol(this.tradingSessionStatus.getSecurity("EUR/USD"));
         mdr.addRelatedSymbol(this.tradingSessionStatus.getSecurity("USD/JPY"));
         mdr.addRelatedSymbol(this.tradingSessionStatus.getSecurity("GBP/USD"));
         mdr.setSubscriptionRequestType(SubscriptionRequestTypeFactory.SUBSCRIBE);
@@ -101,11 +101,11 @@ public class JavaAPIOpenAnyTrade implements IGenericMessageListener, IStatusMess
     public void messageArrived(TradingSessionStatus tss) {
         System.out.println("tss");
         this.tradingSessionStatus = tss;
-        this.subscribe(); // call subscribe only after we get trading session status
+        this.subscribe();
     }
 
     @Override
     public void messageArrived(ISessionStatus iss) {
-        // not required for this example
+        // not required
     }
 }
